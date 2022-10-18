@@ -1,0 +1,38 @@
+.calculator {
+    width: 409px;
+    height: 510px;
+    border: 1px;
+    border-color: black;
+    border-style: solid;
+}
+
+.display {
+    width: 409px;
+    height: 100px;
+    border: 1px;
+    border-color: black;
+    border-style: solid;
+}
+
+.keypad {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    width: 409px;
+    border: 1px;
+    border-color: black;
+    border-style: solid;
+}
+
+.key {
+    width: 100px;
+    height: 100px;
+    font-size: x-large;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px;
+    border-color: black;
+    border-style: solid;
+}
