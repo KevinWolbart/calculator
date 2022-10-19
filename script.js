@@ -17,10 +17,18 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    return a / b;
+    if (b === 0) {
+        deleteAll();
+        return NaN;
+    } else {
+        return a / b;
+    }
 }
 
 function operate(operator, a, b) {
+    if ((a == NaN) || (b == NaN)) {
+        deleteAll();
+    }
     switch(operator) {
         case "+":
             return add(a,b);
@@ -38,8 +46,9 @@ function operate(operator, a, b) {
 }
 
 function displayNumber(num) {
-    if (display.textContent === "Improper Entry, Retry") {
+    if (display.textContent === "Error") {
         display.textContent = "";
+        display.textContent += num;
     } else if (display.textContent.includes("=")) {
         display.textContent = num;
     } else {
@@ -48,34 +57,51 @@ function displayNumber(num) {
 }
 
 function calculate() {
-    if (!operations.operator || !operations.number || !display.textContent) {
-        display.textContent = "Improper Entry, Retry";
+    if (!operations.operator || (operations.number === "") || (display.textContent === "")) {
+        display.textContent = "Error";
         operations.number = "";
         operations.operator = "";
     } else {
-        display.textContent = `= ${operate(operations.operator, operations.number, Number(display.textContent))}`;
+        if (!(operate(operations.operator, operations.number, Number(display.textContent)))) {
+            deleteAll();
+            display.textContent = "Error";
+        } else {
+            operations.number = operate(operations.operator, operations.number, Number(display.textContent));
+            display.textContent = `= ${operations.number}`;
+            operations.operator = "";
+        }
+        
     }
 }
 
 function enterOperator(op) {
-    if (!operations.operator && !operations.number) {
+    if (!operations.operator && (operations.number === "")) {
         operations.operator = op;
         operations.number = Number(display.textContent);
         console.log(operations);
         display.textContent = "";
-    } else if (operations.operator && !display.textContent) {
-        display.textContent = "Improper Entry, Retry";
+    } else if (operations.operator && (display.textContent === "")) {
+        display.textContent = "Error";
         operations.number = "";
         operations.operator = "";
-    } else if (operations.operator && operations.number) {
-        operations.number = operate(operations.operator, operations.number, Number(display.textContent));
+    } else if (operations.operator && !(operations.number === "")) {
+        if (!(operate(operations.operator, operations.number, Number(display.textContent)))) {
+            display.textContent = "Error";
+            operations.number = "";
+            operations.operator = "";
+        } else {
+            operations.number = operate(operations.operator, operations.number, Number(display.textContent));
+            operations.operator = op;
+            console.log(operations);
+            display.textContent = `= ${operations.number}`;
+        }
+    } else if (!operations.operator && !(operations.number === "")) {
         operations.operator = op;
         console.log(operations);
-        display.textContent = `= ${operations.number}`;
     }
 }
 
-function clear() {
+function deleteAll() {
     display.textContent = "";
     operations.number = "";
     operations.operator = "";
